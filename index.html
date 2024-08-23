@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="HeteroAvatar generates a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head.">
+  <meta name="keywords" content="HeteroAvatar, 3D Gaussian Splatting, Mesh Rendering, Head Avatar Generation, Gaussian Head Avatar">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering</title>
+
+<!--  &lt;!&ndash; Global site tag (gtag.js) - Google Analytics &ndash;&gt;-->
+<!--  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>-->
+<!--  <script>-->
+<!--    window.dataLayer = window.dataLayer || [];-->
+
+<!--    function gtag() {-->
+<!--      dataLayer.push(arguments);-->
+<!--    }-->
+
+<!--    gtag('js', new Date());-->
+
+<!--    gtag('config', 'G-PYVRSFMDRL');-->
+<!--  </script>-->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+
+<body>
+
+<!--<nav class="navbar" role="navigation" aria-label="main navigation">-->
+<!--  <div class="navbar-brand">-->
+<!--    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">-->
+<!--      <span aria-hidden="true"></span>-->
+<!--      <span aria-hidden="true"></span>-->
+<!--      <span aria-hidden="true"></span>-->
+<!--    </a>-->
+<!--  </div>-->
+<!--  <div class="navbar-menu">-->
+<!--    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">-->
+<!--      <a class="navbar-item" href="https://keunhong.com">-->
+<!--      <span class="icon">-->
+<!--          <i class="fas fa-home"></i>-->
+<!--      </span>-->
+<!--      </a>-->
+
+<!--      <div class="navbar-item has-dropdown is-hoverable">-->
+<!--        <a class="navbar-link">-->
+<!--          More Research-->
+<!--        </a>-->
+<!--        <div class="navbar-dropdown">-->
+<!--          <a class="navbar-item" href="https://hypernerf.github.io">-->
+<!--            HyperNeRF-->
+<!--          </a>-->
+<!--          <a class="navbar-item" href="https://nerfies.github.io">-->
+<!--            Nerfies-->
+<!--          </a>-->
+<!--          <a class="navbar-item" href="https://latentfusion.github.io">-->
+<!--            LatentFusion-->
+<!--          </a>-->
+<!--          <a class="navbar-item" href="https://photoshape.github.io">-->
+<!--            PhotoShape-->
+<!--          </a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<!-- Title/Authors/Icons. -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering</h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="">Ahmet Cagatay Seker</a><sup>1,2,<span>\(\dagger\)</span></sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Jun Seok Kang</a><sup>1,2,<span>\(\dagger\)</span></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://sites.google.com/view/asckist">Sang Chul Ahn</a><sup>1,2,*</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1 </sup>AI-Robotics, University of Science and Technology (UST), KIST School,</span> <br>
+            <span class="author-block"><sup>2 </sup>Center for Artificial Intelligence Research, Korea Institute of Science and Technology (KIST),</span> <br>
+            <span class="author-block"><sup><span>\(\dagger\)</span> </sup>Authors contributed equally to this work.</span> <br>
+            <span class="author-block"><sup>* </sup>Corresponding author.</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper (Coming soon)</span>
+                </a>
+              </span>
+              <!-- PDF Link. -->
+
+<!--              &lt;!&ndash; Video Link. &ndash;&gt;-->
+<!--              <span class="link-block">-->
+<!--                <a href=""-->
+<!--                   class="external-link button is-normal is-rounded is-dark">-->
+<!--                  <span class="icon">-->
+<!--                      <i class="fab fa-youtube"></i>-->
+<!--                  </span>-->
+<!--                  <span>Video</span>-->
+<!--                </a>-->
+<!--              </span>-->
+<!--              &lt;!&ndash; Video Link. &ndash;&gt;-->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Title/Authors/Icons. -->
+
+
+<!-- Headline. -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="content has-text-centered">
+        <img src="static/images/figure_headline.png"
+             class="interpolation-image"
+             alt="Interpolate start reference image."/>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <div class="content has-text-justified">
+          Given a monocular video, <span class="dnerf">HeteroAvatar</span> generates a controllable Gaussian head avatar
+          with accurate geometry by using 3D Gaussian rendering and mesh rendering concurrently.
+          <strong>(a)</strong> The method of 3D Gaussian splatting alone results in a head avatar composed of numerous Gaussians
+          that fail to conform accurately to the head’s geometry.
+          <strong>(b)</strong> HeteroAvatar creates a head geometry with fewer 3D Gaussians
+          that more precisely align with the geometric structure.
+        </div>
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- Headline. -->
+
+
+<!-- Main Body. -->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Head avatar reconstruction is a crucial research area with wide-ranging applications.
+            Utilizing the promising technique of 3D Gaussian splatting significantly improves rendering quality.
+            However, this method presents challenges, such as inaccurate geometry and noisy surfaces.
+            To address these issues, we propose HeteroAvatar, a novel method for generating
+            a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head.
+            To achieve this, we introduce the hetero rendering method,
+            which concurrently employs both 3D Gaussian rendering and mesh rendering techniques during training.
+            This approach enables HeteroAvatar to accurately capture head geometry
+            with smooth surfaces while maintaining photorealistic rendering.
+            Additionally, our approach is capable of generating a mesh-based head avatar, which ensures
+            compatibility with a wide range of traditional graphics applications.
+            Experimental results demonstrate that HeteroAvatar outperforms state-of-the-art methods
+            in terms of generating well-reconstructed head geometry and
+            rendering photorealistic images with fewer 3D Gaussians.
+          </p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Abstract. -->
+
+<!--    &lt;!&ndash; Paper video. &ndash;&gt;-->
+<!--    <div class="columns is-centered has-text-centered">-->
+<!--      <div class="column is-four-fifths">-->
+<!--        <h2 class="title is-3">Video</h2>-->
+<!--        <div class="publication-video">-->
+<!--          <iframe src="..."-->
+<!--                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>-->
+
+<!--          </iframe>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;/ Paper video. &ndash;&gt;-->
+
+    <!-- Overview. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          <div class="content has-text-centered">
+            <img src="./static/images/figure_overview.png "
+                 style="width: 100%; max-width: 100%; height: auto;"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <p>
+            Given a monocular video, we first employ a head tracker based on FLAME to acquire face-related parameters
+            (<span>\(\psi\)</span>, <span>\(\theta\)</span>) and base mesh <span>\(\mathcal{M}_0\)</span>.
+            We then conduct a geometry-guided 3D Gaussian initialization and generate sets of vertices
+            <span>\(V^0\)</span>, which contains base mesh vertices, vertices from base mesh subdivision, and
+            free points around base mesh. Next, we assign learnable features \(l_i\) to each vertex in \(V_0\).
+            Second, we initialize 3D Gaussians, where we use the positions in <span>\(V^0\)</span>
+            to initialize the 3D Gaussian positions.
+            The initialized 3D Gaussians are represented in red, blue, and green at the bottom of pipeline.
+            Subsequently, <span>\(V^0\)</span> and <span>\(L\)</span> pass through network
+            <span>\(\mathcal{F}_{C}\)</span> to generate canonical head geometry.
+            Next, the deformation module generates offsets to obtain the dynamic changes for the head.
+            Then, we use differentiable mesh and 3D Gaussian renderings to generate images.
+            Finally, we train the head model in an end-to-end manner using these rendered images.
+          </p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Overview. -->
+
+    <!-- Generated 3D Gaussian Models. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Generated Gaussian Head Models</h2>
+        <div class="content has-text-justified">
+          <p>
+            We showcase the Gaussian positions of the generated Gaussian head avatars across multiple subjects,
+            highlighting that our trained head avatar can produce accurate geometry with a smooth surface.
+          </p>
+          <video id="video__bala" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/video_bala.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="video_id3" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/video_id3.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="video_person_0004" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/video_person_0004.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="video_wojtek" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/video_wojtek.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Generated 3D Gaussian Models. -->
+
+    <!-- Comparison. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Comparison with State-of-The-Art</h2>
+        <div class="content has-text-justified">
+          <p>
+            We conducted experiments to evaluate the performance of our method
+            against state-of-the-art techniques. The qualitative findings reveal that our method performs on par with,
+            or exceeds, the results achieved by existing state-of-the-art methods.
+          </p>
+          <video id="comparison_with_sota_1" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/comparison_with_sota_1.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="comparison_with_sota_2" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/comparison_with_sota_2.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="comparison_with_sota_3" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/comparison_with_sota_3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Comparison. -->
+
+    <!-- Novel-view rendering. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Novel-View Rendering</h2>
+        <div class="content has-text-justified">
+          <p>
+            Following the generation of Gaussian head avatars using our method,
+            our model consistently produces rendered images from novel viewpoints.
+          </p>
+          <div class="column is-four-fifths" style="float: left; width: 33.33%;">
+            <video id="novel_view_id2" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/novel_view_render_1.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="column is-four-fifths" style="float: left; width: 33.33%;">
+            <video id="novel_view_nf_01" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/novel_view_render_2.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="column is-four-fifths" style="float: left; width: 33.33%;">
+            <video id="novel_view_wojtek" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/novel_view_render_3.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Novel-view rendering. -->
+
+    <!-- Qualitative Results of Test Images. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">More Qualitative Results of Our Method</h2>
+          <div class="content has-text-justified">
+            <p>
+              We present additional examples featuring various subjects,
+              demonstrating that our trained head avatar is capable of generating photorealistic renderings.
+            </p>
+            <video id="self_biden" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/qualitative_test_1.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="self_id3" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/qualitative_test_2.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="self_id5" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/qualitative_test_3.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="self_wojtek" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/qualitative_test_4.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Qualitative Results of Test Images. -->
+
+    <!-- Cross-Identity Reenactment. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Cross-Identity Reenactment</h2>
+          <div class="content has-text-justified">
+            <p>
+              To illustrate the effectiveness of our approach, we conduct a cross-identity reenactment study with
+              a range of subjects. The head avatars reconstructed using our method are capable of being controlled
+              by the pose and expression of a different subject while producing plausible renderings.
+            </p>
+            <video id="biden_to_id3" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cross_reenactment_1.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="justin_to_malte" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cross_reenactment_2.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Cross-Identity Reenactment. -->
+
+    <!-- Generated Mesh Models. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Generated Mesh-based Head Models</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our approach also produces mesh-based head avatars,
+            which are generated during the mesh rendering process,
+            accurately capturing the underlying head geometry and producing detailed mesh models.
+          </p>
+          <img src="./static/images/figure_mesh_models.png"
+               class="interpolation-image"
+               alt="Interpolate start reference image."/>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Generated Mesh Models. -->
+
+    <!-- Compatibility. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Compatibility</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our method is compatible with existing commercial graphics applications.
+            This compatibility allows for the straightforward utilization of the generated mesh model
+            in diverse applications, requiring only the provision of the mesh model and corresponding texture map.
+          </p>
+          <video id="video_meshlab" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/compatibility_1.mp4"
+                    type="video/mp4">
+          </video>
+          <h5 style="text-align: center">Visualization of output mesh model in MeshLab</h5><br>
+
+          <video id="video_blender" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/compatibility_2.mp4"
+                    type="video/mp4">
+          </video>
+          <h5 style="text-align: center">Visualization of output mesh model in Blender</h5><br>
+          <video id="video_audio2face" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/compatibility_3.mp4"
+                    type="video/mp4">
+          </video>
+          <h5 style="text-align: center">The output mesh model is animated based on audio in Audio2Face (NVIDIA Omniverse)</h5>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!--/ Compatibility. -->
+
+  </div>
+</section>
+<!-- Main Body. -->
+
+
+<!-- Citation. -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <p>If you find this paper useful for your work, please cite:</p>
+    <pre><code>@article{...,
+  author    = {Ahmet Cagatay Seker, Jun Seok Kang and Sang Chul Ahn},
+  title     = {HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering},
+  journal   = {...},
+  year      = {...},
+}</code></pre>
+  </div>
+</section>
+<!-- Citation. -->
+
+
+<!-- Footer. -->
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link"
+         href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a> and borrowed from the
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Footer. -->
+
+</body>
+</html>
