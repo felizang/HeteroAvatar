@@ -3,8 +3,9 @@
 [![Project Page](https://img.shields.io/badge/Project-Page-blue?logo=github&logoColor=fff&style=flat)]()
 <!-- [![Elsevier Badge](https://img.shields.io/badge/IMAVIS-FF6C00?logo=elsevier&logoColor=fff&style=flat)]() -->
 
+HeteroAvatar is a novel method for generating a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head
 
-This is the repository that contains source code for HeteroAvatar project page.
+The project page of HeteroAvatar is https://felizang.github.io/HeteroAvatar/
 
 If you find HeteroAvatar useful for your work please cite:
 ```
