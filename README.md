@@ -1,7 +1,7 @@
 # HeteroAvatar: Gaussian Head Avatar Generation with Accurate Geometry Using Hetero Rendering
 
 [![Project Page](https://img.shields.io/badge/Project-Page-blue?logo=github&logoColor=fff&style=flat)]()
-# [![Elsevier Badge](https://img.shields.io/badge/IMAVIS-FF6C00?logo=elsevier&logoColor=fff&style=flat)]()
+<!-- [![Elsevier Badge](https://img.shields.io/badge/IMAVIS-FF6C00?logo=elsevier&logoColor=fff&style=flat)]() -->
 
 
 This is the repository that contains source code for HeteroAvatar.
