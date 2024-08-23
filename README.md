@@ -4,7 +4,7 @@
 <!-- [![Elsevier Badge](https://img.shields.io/badge/IMAVIS-FF6C00?logo=elsevier&logoColor=fff&style=flat)]() -->
 
 
-This is the repository that contains source code for HeteroAvatar.
+This is the repository that contains source code for HeteroAvatar project page.
 
 If you find HeteroAvatar useful for your work please cite:
 ```
