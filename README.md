@@ -1,9 +1,9 @@
-# HeteroAvatar: Gaussian Head Avatar Generation with Accurate Geometry Using Hetero Rendering
+# HeteroAvatar: Generation of Gaussian Head Avatars with Correct Geometry Using Hetero Rendering
 
 [![Project Page](https://img.shields.io/badge/Project-Page-blue?logo=github&logoColor=fff&style=flat)]()
 <!-- [![Elsevier Badge](https://img.shields.io/badge/IMAVIS-FF6C00?logo=elsevier&logoColor=fff&style=flat)]() -->
 
-HeteroAvatar is a novel method for generating a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head
+HeteroAvatar is a novel method for generating a controllable Gaussian head avatar with correct geometry from a monocular video of a dynamic head
 
 The project page of HeteroAvatar is https://felizang.github.io/HeteroAvatar/
 
@@ -11,7 +11,7 @@ If you find HeteroAvatar useful for your work please cite:
 ```
 @article{...
   author    = {Ahmet Cagatay Seker, Jun Seok Kang and Sang Chul Ahn},
-  title     = {HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering},
+  title     = {HeteroAvatar: Generation of Gaussian Head Avatars with Correct Geometry Using Hetero Rendering},
   journal   = {...},
   year      = {...},
 }
