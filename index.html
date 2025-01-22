@@ -6,7 +6,7 @@
         content="HeteroAvatar generates a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head.">
   <meta name="keywords" content="HeteroAvatar, 3D Gaussian Splatting, Mesh Rendering, Head Avatar Generation, Gaussian Head Avatar">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering</title>
+  <title>HeteroAvatar: Generation of Gaussian Head Avatars with Correct Geometry Using Hetero Rendering</title>
 
 <!--  &lt;!&ndash; Global site tag (gtag.js) - Google Analytics &ndash;&gt;-->
 <!--  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>-->
@@ -91,7 +91,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering</h1>
+          <h1 class="title is-1 publication-title">HeteroAvatar: Generation of Gaussian Head Avatars with Correct Geometry Using Hetero Rendering</h1>
 
           <div class="is-size-5 publication-authors">
             <span class="author-block">
@@ -159,12 +159,14 @@
       </div>
       <h2 class="subtitle has-text-centered">
         <div class="content has-text-justified">
-          Given a monocular video, <span class="dnerf">HeteroAvatar</span> generates a controllable Gaussian head avatar
-          with accurate geometry by using 3D Gaussian rendering and mesh rendering concurrently.
-          <strong>(a)</strong> The method of 3D Gaussian splatting alone results in a head avatar composed of numerous Gaussians
-          that fail to conform accurately to the head’s geometry.
-          <strong>(b)</strong> HeteroAvatar creates a head geometry with fewer 3D Gaussians
-          that more precisely align with the geometric structure.
+          Given a monocular video of a dynamic head, the head avatars generated through
+          <strong>(a)</strong> 3D Gaussian splatting only and <strong>(b)</strong> <strong><span class="dnerf">HeteroAvatar</span></strong>,
+          which utilizes 3D Gaussian splatting with mesh rendering concurrently, produce notably distinct outcomes.
+          <strong>From left to right:</strong> a rendered image using 3D Gaussian splatting,
+          followed by frontal and side views of the 3D Gaussian position visualizations.
+          The method of 3D Gaussian splatting alone results in a head avatar composed of numerous Gaussians
+          that fail to conform precisely to the head's geometry. In contrast, HeteroAvatar generates a head geometry
+          with fewer 3D Gaussians that more effectively align with the actual geometric structure.
         </div>
       </h2>
     </div>
@@ -183,20 +185,18 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Head avatar reconstruction is a crucial research area with wide-ranging applications.
-            Utilizing the promising technique of 3D Gaussian splatting significantly improves rendering quality.
-            However, this method presents challenges, such as inaccurate geometry and noisy surfaces.
-            To address these issues, we propose HeteroAvatar, a novel method for generating
-            a controllable Gaussian head avatar with accurate geometry from a monocular video of a dynamic head.
-            To achieve this, we introduce the hetero rendering method,
-            which concurrently employs both 3D Gaussian rendering and mesh rendering techniques during training.
-            This approach enables HeteroAvatar to accurately capture head geometry
-            with smooth surfaces while maintaining photorealistic rendering.
-            Additionally, our approach is capable of generating a mesh-based head avatar, which ensures
-            compatibility with a wide range of traditional graphics applications.
-            Experimental results demonstrate that HeteroAvatar outperforms state-of-the-art methods
-            in terms of generating well-reconstructed head geometry and
-            rendering photorealistic images with fewer 3D Gaussians.
+            Head avatar reconstruction is a crucial research topic with wide-ranging applications. For this purpose,
+            utilizing the promising technique of 3D Gaussian splatting significantly improves rendering quality.
+            However, this method encounters challenges, such as imprecise geometry and noisy surfaces.
+            To address these issues, we propose HeteroAvatar, a novel method for generating a Gaussian head avatar
+            with correct geometry from a monocular video of a dynamic head.
+            To achieve this, we introduce the hetero rendering method, which concurrently employs
+            both 3D Gaussian rendering and mesh rendering techniques during training.
+            This approach enables HeteroAvatar to accurately capture the head geometry with smooth surfaces
+            while maintaining photorealistic rendering quality. Additionally, our approach is capable of generating
+            a mesh-based head avatar, which ensures compatibility with a wide range of traditional graphics applications.
+            Experimental results demonstrate that HeteroAvatar outperforms state-of-the-art methods in terms of
+            reconstructed geometry quality and photorealistic rendering with fewer 3D Gaussians.
           </p>
         </div>
       </div>
@@ -231,19 +231,19 @@
                  alt="Interpolate start reference image."/>
           </div>
           <p>
-            Given a monocular video, we first employ a head tracker based on FLAME to acquire face-related parameters
-            (<span>\(\psi\)</span>, <span>\(\theta\)</span>) and base mesh <span>\(\mathcal{M}_0\)</span>.
-            We then conduct a geometry-guided 3D Gaussian initialization and generate sets of vertices
-            <span>\(V^0\)</span>, which contains base mesh vertices, vertices from base mesh subdivision, and
-            free points around base mesh. Next, we assign learnable features \(l_i\) to each vertex in \(V_0\).
-            Second, we initialize 3D Gaussians, where we use the positions in <span>\(V^0\)</span>
-            to initialize the 3D Gaussian positions.
-            The initialized 3D Gaussians are represented in red, blue, and green at the bottom of pipeline.
-            Subsequently, <span>\(V^0\)</span> and <span>\(L\)</span> pass through network
-            <span>\(\mathcal{F}_{C}\)</span> to generate canonical head geometry.
-            Next, the deformation module generates offsets to obtain the dynamic changes for the head.
-            Then, we use differentiable mesh and 3D Gaussian renderings to generate images.
-            Finally, we train the head model in an end-to-end manner using these rendered images.
+            Given a monocular video, a head tracker algorithm is employed to extract face-related parameters
+            (<span>\(\beta\)</span>, <span>\(\psi\)</span>, <span>\(\theta\)</span>) along with a FLAME mesh model.
+            We then utilize a geometry-guided 3D Gaussian initialization, where a 3D Gaussian is associated with
+            each vertex of the mesh. This process yields both an initial Gaussian model <span>\(\mathcal{G}_0\)</span>
+            and a corresponding mesh model <span>\(\mathcal{M}_0\)</span>. Learnable features <span>\(L_i\)</span> are
+            subsequently assigned to each vertex. The training pipeline utilizes canonical and deformation modules
+            to refine the shape and learn Gaussian parameters, followed by the use of both mesh rendering and
+            Gaussian rendering for image generation. Mesh rendering is essential for accurately capturing the geometry,
+            as it ensures the alignment of 3D Gaussian centers with the actual head surface. Meanwhile,
+            3D Gaussian rendering contributes significantly to improving the visual quality.
+            In the lower part of the figure, the red and blue blobs on the head models represent 3D Gaussians
+            that are attached to base vertices and subdivided vertices, respectively. The green blobs represent
+            free Gaussians for better image quality.
           </p>
         </div>
       </div>
@@ -469,7 +469,7 @@
     <p>If you find this paper useful for your work, please cite:</p>
     <pre><code>@article{...,
   author    = {Ahmet Cagatay Seker, Jun Seok Kang and Sang Chul Ahn},
-  title     = {HeteroAvatar: Generation of Gaussian Head Avatars with Accurate Geometry Using Hetero Rendering},
+  title     = {HeteroAvatar: Generation of Gaussian Head Avatars with Correct Geometry Using Hetero Rendering},
   journal   = {...},
   year      = {...},
 }</code></pre>
