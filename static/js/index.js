@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     var options = {
 			slidesToScroll: 1,
-			slidesToShow: 3,
+			slidesToShow: 1,
 			loop: true,
 			infinite: true,
 			autoplay: false,
@@ -76,3 +76,32 @@ $(document).ready(function() {
     bulmaSlider.attach();
 
 })
+
+
+
+function copyBibTeX() {
+  const bibtexText = document.querySelector('.bibtex code').innerText;
+
+  const copyIcon = document.getElementById('copyIcon');
+  const checkIcon = document.getElementById('checkIcon');
+  const copyText = document.getElementById('copyText');
+  const copiedText = document.getElementById('copiedText');
+
+  navigator.clipboard.writeText(bibtexText).then(() => {
+    // Show copied state
+    copyIcon.style.display = 'none';
+    copyText.style.display = 'none';
+    checkIcon.style.display = 'inline';
+    copiedText.style.display = 'inline';
+
+    // Revert after 1.5 seconds
+    setTimeout(() => {
+      checkIcon.style.display = 'none';
+      copiedText.style.display = 'none';
+      copyIcon.style.display = 'inline';
+      copyText.style.display = 'inline';
+    }, 1500);
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+  });
+}
