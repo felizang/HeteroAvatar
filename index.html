@@ -11,9 +11,9 @@
   <!-- Open Graph meta tags for social media previews -->
   <meta property="og:title" content="HeteroAvatar: Generation of Gaussian Head Avatars With Correct Geometry Using Hetero Rendering">
   <meta property="og:description" content="Short description">
-  <meta property="og:image" content="./static/images/teaser.svg">
+  <meta property="og:image" content="./static/images/teaser.jpg">
   <meta property="og:image:alt" content="Example of HeteroAvatar reconstruction">
-  <meta property="og:url" content="https://acseker.github.io/HeteroAvatar/">
+  <meta property="og:url" content="https://felizang.github.io/HeteroAvatar/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="HeteroAvatar">
 
@@ -21,7 +21,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HeteroAvatar: Generation of Gaussian Head Avatars With Correct Geometry Using Hetero Rendering">
   <meta name="twitter:description" content="Short description">
-  <meta name="twitter:image" content="./static/images/teaser.svg">
+  <meta name="twitter:image" content="./static/images/teaser.jpg">
   <meta name="twitter:image:alt" content="Example of HeteroAvatar reconstruction">
 
 
@@ -157,7 +157,7 @@
       <br>
 
       <div class="content has-text-centered">
-        <img src="static/images/teaser.svg"
+        <img src="static/images/teaser.jpg"
              alt="Sample Image."/>
       </div>
       
@@ -223,7 +223,7 @@
         <h2 class="title is-3" style="font-weight: bold; margin-bottom: 20px;">Method</h2>
         <div class="content has-text-justified">
           <div class="content has-text-centered">
-            <img src="./static/images/pipeline.svg"
+            <img src="./static/images/pipeline.jpg"
                  style="width: 100%; max-width: 100%; height: auto;"
                  alt=""/>
           </div>
@@ -591,7 +591,13 @@
 
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <div id="results-carousel" class="carousel results-carousel">
+        <div id="results-carousel" class="carousel results-carousel compat-carousel">
+          <div class="item">
+            <video autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/compatibility_3.mp4" type="video/mp4">
+            </video>
+          </div>
+
           <div class="item">
             <video autoplay controls muted loop playsinline height="100%">
               <source src="./static/videos/compatibility_1.mp4" type="video/mp4">
@@ -601,12 +607,6 @@
           <div class="item">
             <video autoplay controls muted loop playsinline height="100%">
               <source src="./static/videos/compatibility_2.mp4" type="video/mp4">
-            </video>
-          </div>
-
-          <div class="item">
-            <video autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/compatibility_3.mp4" type="video/mp4">
             </video>
           </div>
         </div>

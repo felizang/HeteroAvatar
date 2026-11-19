@@ -185,3 +185,31 @@ body {
   transition: opacity 0.2s ease-in-out;
 }
 
+/* Move carousel arrows slightly inside the video window */
+.results-carousel .slider-navigation-previous {
+  left: 20px;
+}
+
+.results-carousel .slider-navigation-next {
+  right: 20px;
+}
+
+/* Compatibility carousel: window hugs each video's own aspect ratio */
+.compat-carousel .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.compat-carousel .item video {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 720px;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+}
